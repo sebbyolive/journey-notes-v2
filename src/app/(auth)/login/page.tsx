@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { handleLogin, handleSignup } from "@/app/(auth)/login/actions";
+import { handleLogin, handleSignup } from "@/utils/auth/actions";
+import { redirectUser } from "@/utils/auth/redirectUser";
 import { supabase } from "@/utils/supabase/client";
 
 export default function Login() {
+  redirectUser("/app", true);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pageType, setPageType] = useState<"login" | "signup">("login");
