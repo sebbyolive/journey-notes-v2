@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HomeBento() {
   return (
     <div id="features" className="bg-white py-12 sm:py-22">
@@ -12,10 +14,12 @@ export default function HomeBento() {
           <div className="relative lg:col-span-3">
             <div className="absolute inset-px rounded-lg bg-white" />
             <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)]">
-              <img
+              <Image
                 alt=""
                 src="https://tailwindui.com/plus/img/component-images/bento-01-integrations.png"
                 className="h-80 object-cover"
+                width={700}
+                height={600}
               />
               <div className="p-10 pt-4">
                 <h3 className="text-sm/4 font-semibold text-indigo-600">
@@ -35,10 +39,12 @@ export default function HomeBento() {
           <div className="relative lg:col-span-3">
             <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-br-[2rem]" />
             <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-br-[calc(2rem+1px)]">
-              <img
+              <Image
                 alt=""
                 src="https://tailwindui.com/plus/img/component-images/bento-01-network.png"
                 className="h-80 object-cover"
+                width={700}
+                height={600}
               />
               <div className="p-10 pt-4">
                 <h3 className="text-sm/4 font-semibold text-indigo-600">

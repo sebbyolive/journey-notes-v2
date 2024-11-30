@@ -12,10 +12,14 @@ const navigation = [
   { name: "Features", href: "#features" },
   { name: "Get Started", href: "#getstarted" },
 ];
+
 export default function MainNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const onHomepage = usePathname();
-  console.log(onHomepage);
+  const path = usePathname();
+  const onHomepage = path === "/";
+  const inApplication = path.startsWith("/app");
+
+  if (inApplication) return;
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
@@ -38,20 +42,21 @@ export default function MainNavigation() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-sm/6 font-semibold text-gray-900"
-            >
-              {item.name}
-            </Link>
-          ))}
+          {onHomepage &&
+            navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-sm/6 font-semibold text-gray-900"
+              >
+                {item.name}
+              </Link>
+            ))}
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
-            <Button variant={"outline"}>
+            <Button>
               Head to App <span aria-hidden="true">&rarr;</span>
             </Button>
           </Link>
