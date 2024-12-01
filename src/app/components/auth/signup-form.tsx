@@ -23,31 +23,36 @@ export function SignupForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="seb@example.com"
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
+        <form>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="seb@example.com"
+                required
+              />
             </div>
-            <Input id="password" type="password" required />
-          </div>
-          <form>
-            <Button type="submit" className="w-full">
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link
+                  href="#"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input id="password" type="password" name="password" required />
+            </div>
+            <Button type="submit" className="w-full" formAction={signup}>
               Sign Up
             </Button>
-          </form>
-        </div>
+          </div>
+        </form>
+
         <div className="mt-4 text-center text-sm">
           Already have an account? {""}
           <Link href="/login" className="underline">

@@ -6,7 +6,8 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "../ui/logo";
 import Link from "next/link";
-import { Button } from "../ui/button";
+
+import AuthLinks from "./auth-links";
 
 const navigation = [
   { name: "Features", href: "#features" },
@@ -54,12 +55,8 @@ export default function MainNavigation() {
             ))}
         </div>
 
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
-            <Button>
-              Head to App <span aria-hidden="true">&rarr;</span>
-            </Button>
-          </Link>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-6 items-center">
+          <AuthLinks />
         </div>
       </nav>
       <Dialog
