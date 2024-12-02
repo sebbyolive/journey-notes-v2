@@ -1,6 +1,5 @@
+"use client";
 import Link from "next/link";
-
-import { signup } from "@/utils/supabase/actions";
 
 import { Button } from "@/app/components/ui/button";
 import {
@@ -12,8 +11,37 @@ import {
 } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
+import { useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import SuccessModal from "./success-modal";
 
 export function SignupForm() {
+  const supabase = createClient();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [onSuccess, setOnSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSignUp = async () => {
+    setError(null);
+
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) {
+      setError(signUpError.message);
+      return;
+    }
+
+    setOnSuccess(true);
+  };
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -32,6 +60,7 @@ export function SignupForm() {
                 type="email"
                 name="email"
                 placeholder="seb@example.com"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -45,13 +74,22 @@ export function SignupForm() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" name="password" required />
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
-            <Button type="submit" className="w-full" formAction={signup}>
+            <Button type="submit" className="w-full" formAction={handleSignUp}>
               Sign Up
             </Button>
           </div>
         </form>
+
+        {error && <p className="self-center">{error}</p>}
+        {onSuccess && <SuccessModal />}
 
         <div className="mt-4 text-center text-sm">
           Already have an account? {""}

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { login } from "@/utils/supabase/actions";
 import { Button } from "@/app/components/ui/button";
 import {
   Card,
@@ -15,7 +14,7 @@ import { Label } from "@/app/components/ui/label";
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const supabase = createClient();
@@ -35,7 +34,7 @@ export function LoginForm() {
     if (error) {
       setError(error.message);
     } else {
-      router.push("/");
+      router.push("/app");
     }
   };
 

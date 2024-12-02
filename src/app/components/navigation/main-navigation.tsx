@@ -18,8 +18,8 @@ export default function MainNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const path = usePathname();
   const onHomepage = path === "/";
-  const inApplication = path.startsWith("/app");
 
+  const inApplication = path.startsWith("/app");
   if (inApplication) return;
 
   return (

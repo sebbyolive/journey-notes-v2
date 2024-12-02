@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const path = usePathname();
+
   const inApplication = path.startsWith("/app");
+  if (inApplication) return;
 
   return (
     <footer className="bg-white">
