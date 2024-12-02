@@ -11,6 +11,10 @@ export default function AppSidebar() {
   const { journeys, isLoading } = useJourneys();
   const [showCountries, setShowCountries] = useState<boolean>(false);
 
+  const countries: string[] = Array.from(
+    new Set(journeys.map((journey) => journey.country))
+  );
+
   return (
     <div className="flex flex-col items-center mt-12">
       <Logo className="w-72" />
@@ -22,6 +26,10 @@ export default function AppSidebar() {
       <ul className="mt-6">
         {isLoading ? (
           <LoadingSpinner />
+        ) : showCountries ? (
+          countries.map((country, index) => {
+            return <li key={index}>{country}</li>;
+          })
         ) : (
           journeys.map((journey, index) => {
             return <li key={index}>{journey["id"]}</li>;
