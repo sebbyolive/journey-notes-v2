@@ -26,6 +26,9 @@ type Journey = {
   longitude: string;
   date_visited: string;
   notes: string;
+  showDraftJourney: boolean;
+  showCities: boolean;
+  showCountries: boolean;
 };
 
 const initialDraftJourneyState: Journey = {
@@ -38,6 +41,9 @@ const initialDraftJourneyState: Journey = {
   longitude: "",
   date_visited: "",
   notes: "",
+  showDraftJourney: false,
+  showCities: true,
+  showCountries: false,
 };
 
 type DraftJourneyAction =
@@ -52,6 +58,18 @@ type DraftJourneyAction =
   | {
       type: "update/date_visited";
       payload: { date_visited: string };
+    }
+  | {
+      type: "update/changeSidebarUI";
+      payload: {
+        showCities: boolean;
+        showCountries: boolean;
+        showDraftJourneys: boolean;
+      };
+    }
+  | {
+      type: "submit/submitDraftJourney";
+      payload: Partial<Journey>;
     };
 
 const draftJourneyReducer = (
@@ -69,8 +87,27 @@ const draftJourneyReducer = (
         ...state,
         notes: action.payload.notes,
       };
+    case "update/date_visited":
+      return {
+        ...state,
+        date_visited: action.payload.date_visited,
+      };
+    case "update/changeSidebarUI":
+      return {
+        ...state,
+        showCities: action.payload.showCities,
+        showCountries: action.payload.showCountries,
+        showDraftJourney: action.payload.showDraftJourneys,
+      };
+    case "submit/submitDraftJourney":
+      // create submit to supabase here! :D
+
+      return {
+        ...state,
+        ...initialDraftJourneyState,
+      };
     default:
-      throw new Error(`Unknown action type: ${action.type}`);
+      throw new Error(`Unknown action type: ${action}`);
   }
 };
 

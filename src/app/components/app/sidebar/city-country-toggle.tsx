@@ -1,26 +1,40 @@
 import React from "react";
 import { Button } from "../../ui/button";
+import { useJourneys } from "@/contexts/JourneysContext";
 
-type CityCountryToggleProps = {
-  showCountries: boolean;
-  setShowCountries: React.Dispatch<React.SetStateAction<boolean>>;
-};
+export default function CityCountryToggle() {
+  const { draftJourney, dispatch } = useJourneys();
+  const { showCities, showCountries } = draftJourney;
 
-export default function CityCountryToggle({
-  showCountries,
-  setShowCountries,
-}: CityCountryToggleProps) {
   return (
     <div className="flex mt-4 gap-1">
       <Button
-        variant={showCountries ? "outline" : "default"}
-        onClick={() => setShowCountries(false)}
+        variant={showCities ? "default" : "outline"}
+        onClick={() =>
+          dispatch({
+            type: "update/changeSidebarUI",
+            payload: {
+              showCities: true,
+              showCountries: false,
+              showDraftJourneys: false,
+            },
+          })
+        }
       >
         Show Cities
       </Button>
       <Button
         variant={showCountries ? "default" : "outline"}
-        onClick={() => setShowCountries(true)}
+        onClick={() =>
+          dispatch({
+            type: "update/changeSidebarUI",
+            payload: {
+              showCities: false,
+              showCountries: true,
+              showDraftJourneys: false,
+            },
+          })
+        }
       >
         Show Countries
       </Button>

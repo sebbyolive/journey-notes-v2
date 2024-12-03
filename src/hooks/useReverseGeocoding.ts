@@ -1,18 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { createEmojiFromCountryCode } from "@/lib/createEmojiFromCountryCode";
-
-// NOT NEEDED ANYMORE
-// type ReverseGeocodingResult = {
-//   address: {
-//     city: string;
-//     country: string;
-//     country_code: string;
-//   };
-//   lat: string;
-//   lon: string;
-// };
 
 export function useReverseGeocoding(
   lat: number | null,
@@ -31,6 +20,8 @@ export function useReverseGeocoding(
 
         const data = await res.json();
 
+        console.log(data);
+
         if (!data.address) {
           console.log("Invalid location clicked"); // i.e. water, etc.
           dispatch({
@@ -39,6 +30,9 @@ export function useReverseGeocoding(
               city_name: "invalid location",
               country: "invalid location",
               emoji: "",
+              showDraftJourney: true,
+              showCities: false,
+              showCountries: false,
             },
           });
         }
@@ -47,11 +41,18 @@ export function useReverseGeocoding(
           dispatch({
             type: "update/location",
             payload: {
-              city_name: data.address.city,
+              city_name: data.address.city // some places didn't have city or name
+                ? data.address.city
+                : data.name
+                ? data.name
+                : data.display_name,
               country: data.address.country,
               latitude: data.lat,
               longitude: data.lon,
               emoji: createEmojiFromCountryCode(data.address.country_code),
+              showDraftJourney: true,
+              showCities: false,
+              showCountries: false,
             },
           });
         }
