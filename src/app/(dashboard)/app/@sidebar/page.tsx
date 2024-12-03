@@ -8,7 +8,7 @@ import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle"
 import { signout } from "@/utils/supabase/actions";
 
 export default function AppSidebar() {
-  const { journeys, isLoading } = useJourneys();
+  const { journeys, isLoading, draftJourney } = useJourneys();
   const [showCountries, setShowCountries] = useState<boolean>(false);
 
   const countries: string[] = Array.from(
@@ -32,10 +32,11 @@ export default function AppSidebar() {
           })
         ) : (
           journeys.map((journey, index) => {
-            return <li key={index}>{journey["id"]}</li>;
+            return <li key={index}>{journey["city_name"]}</li>;
           })
         )}
       </ul>
+      <ul>{draftJourney.emoji}</ul>
 
       <Button
         className="absolute bottom-12"

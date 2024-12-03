@@ -1,9 +1,24 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { useJourneys } from "@/contexts/JourneysContext";
+import { type LatLngExpression, type LatLngLiteral } from "leaflet";
+import SetNewLocation from "./set-new-location";
 
 export default function LeafletMap() {
-  const position: [number, number] = [51.505, -0.09];
+  const { journeys } = useJourneys();
+  const [mapPosition, setMapPosition] = useState<LatLngExpression>([
+    51.51, -0.09,
+  ]);
+
+  const markers: LatLngExpression[] = Array.from(
+    journeys.map((journey) => [
+      parseFloat(journey["latitude"]),
+      parseFloat(journey["longitude"]),
+    ])
+  );
 
   if (typeof window == "undefined") {
     return;
@@ -12,7 +27,7 @@ export default function LeafletMap() {
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <MapContainer
-        center={position}
+        center={mapPosition}
         zoom={12}
         className="rounded-sm"
         style={{ height: "100%", width: "100%" }}
@@ -21,9 +36,11 @@ export default function LeafletMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={position}>
-          <Popup>A simple popup. Easily customizable.</Popup>
-        </Marker>
+
+        {markers.map((LatLngPos, index) => {
+          return <Marker position={LatLngPos} key={index}></Marker>;
+        })}
+        <SetNewLocation />
       </MapContainer>
     </div>
   );
