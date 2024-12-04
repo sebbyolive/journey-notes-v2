@@ -7,15 +7,15 @@ import LoadingSpinner from "@/app/components/ui/loading-spinner";
 import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle";
 import { signout } from "@/utils/supabase/actions";
 import JourneyInputs from "@/app/components/app/sidebar/journey-inputs";
+import { useSubmitJourney } from "@/hooks/useSubmitJourney";
 
 export default function AppSidebar() {
-  const { journeys, isLoading, draftJourney } = useJourneys();
-
-  const { showDraftJourney, showCities, showCountries, city_name, country } =
-    draftJourney;
+  const { journeys, isLoading, draftJourney, dispatch, refreshJourneys } =
+    useJourneys();
+  const { showDraftJourney, showCountries, city_name } = draftJourney;
+  const [notesError, setNotesError] = useState(false);
 
   const invalidLocationSelected = city_name === "invalid location";
-
   const countries: string[] = Array.from(
     new Set(journeys.map((journey) => journey.country))
   );
@@ -56,10 +56,28 @@ export default function AppSidebar() {
           ) : (
             <h2>{city_name}</h2>
           )}
-          <JourneyInputs />
-          <Button className="mx-auto bg-green-500 mt-2" variant="outline">
-            Submit Journey
-          </Button>
+          <div className="flex flex-col gap-2">
+            <JourneyInputs notesError={notesError} />
+            <p className="mt-2">
+              {draftJourney.date_visited &&
+                `Travel Date: ${draftJourney.date_visited}`}
+            </p>
+            <p className="mt-2">{draftJourney.notes}</p>
+            <Button
+              onClick={() =>
+                useSubmitJourney({
+                  draftJourney,
+                  dispatch,
+                  refreshJourneys,
+                  setNotesError,
+                })
+              }
+              className="mx-auto bg-green-500 mt-2"
+              variant="outline"
+            >
+              Submit Journey
+            </Button>
+          </div>
         </div>
       )}
     </div>

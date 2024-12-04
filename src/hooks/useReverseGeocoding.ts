@@ -20,15 +20,14 @@ export function useReverseGeocoding(
 
         const data = await res.json();
 
-        console.log(data);
-
         if (!data.address) {
+          // Catch bug that loads the error message for an invalid location on inital render
           console.log("Invalid location clicked"); // i.e. water, etc.
           dispatch({
             type: "update/location",
             payload: {
               city_name: "invalid location",
-              country: "invalid location",
+              country: "",
               emoji: "",
               showDraftJourney: true,
               showCities: false,
@@ -45,7 +44,7 @@ export function useReverseGeocoding(
                 ? data.address.city
                 : data.name
                 ? data.name
-                : data.display_name,
+                : data.address.country,
               country: data.address.country,
               latitude: data.lat,
               longitude: data.lon,

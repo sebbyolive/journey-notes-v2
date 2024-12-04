@@ -14,9 +14,10 @@ type JourneysContextProps = {
   isLoading: boolean;
   draftJourney: Journey;
   dispatch: Dispatch<DraftJourneyAction>;
+  refreshJourneys: () => Promise<void>;
 };
 
-type Journey = {
+export type Journey = {
   created_at: string;
   city_name: string;
   user_id: string;
@@ -26,9 +27,9 @@ type Journey = {
   longitude: string;
   date_visited: string;
   notes: string;
-  showDraftJourney: boolean;
-  showCities: boolean;
-  showCountries: boolean;
+  showDraftJourney?: boolean;
+  showCities?: boolean;
+  showCountries?: boolean;
 };
 
 const initialDraftJourneyState: Journey = {
@@ -49,7 +50,7 @@ const initialDraftJourneyState: Journey = {
 type DraftJourneyAction =
   | {
       type: "update/location";
-      payload: Partial<Journey>;
+      payload: { date_visited: string };
     }
   | {
       type: "update/notes";
@@ -100,8 +101,6 @@ const draftJourneyReducer = (
         showDraftJourney: action.payload.showDraftJourneys,
       };
     case "submit/submitDraftJourney":
-      // create submit to supabase here! :D
-
       return {
         ...state,
         ...initialDraftJourneyState,
@@ -125,26 +124,28 @@ export function JourneysProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
-  useEffect(() => {
+  const fetchJourneys = async () => {
     setIsLoading(true);
-    const fetchJourneys = async () => {
-      const { data, error } = await supabase.from("journeys").select("*");
-
-      if (error) {
-        console.error(error.message);
-        setIsLoading(false);
-        return;
-      }
-
+    const { data, error } = await supabase.from("journeys").select("*");
+    if (error) {
+      console.error(error.message);
+    } else {
       setJourneys(data || []);
-      setIsLoading(false);
-    };
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     fetchJourneys();
   }, []);
 
+  const refreshJourneys = async () => {
+    await fetchJourneys();
+  };
+
   return (
     <JourneysContext.Provider
-      value={{ journeys, isLoading, draftJourney, dispatch }}
+      value={{ journeys, isLoading, draftJourney, dispatch, refreshJourneys }}
     >
       {children}
     </JourneysContext.Provider>

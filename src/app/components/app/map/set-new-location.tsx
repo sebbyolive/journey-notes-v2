@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useJourneys } from "@/contexts/JourneysContext";
