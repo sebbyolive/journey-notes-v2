@@ -8,6 +8,7 @@ import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle"
 import { signout } from "@/utils/supabase/actions";
 import JourneyInputs from "@/app/components/app/sidebar/journey-inputs";
 import { useSubmitJourney } from "@/hooks/useSubmitJourney";
+import JourneyItem from "@/app/components/app/sidebar/journey-item";
 
 export default function AppSidebar() {
   const { journeys, isLoading, draftJourney, dispatch, refreshJourneys } =
@@ -35,7 +36,13 @@ export default function AppSidebar() {
             })
           ) : (
             journeys.map((journey, index) => {
-              return <li key={index}>{journey["city_name"]}</li>;
+              return (
+                <JourneyItem
+                  journey={journey}
+                  key={index}
+                  dispatch={dispatch}
+                />
+              );
             })
           )}
         </ul>
@@ -62,7 +69,7 @@ export default function AppSidebar() {
               {draftJourney.date_visited &&
                 `Travel Date: ${draftJourney.date_visited}`}
             </p>
-            <p className="mt-2">{draftJourney.notes}</p>
+
             <Button
               onClick={() =>
                 useSubmitJourney({

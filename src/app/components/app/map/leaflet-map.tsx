@@ -4,8 +4,16 @@ import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useJourneys } from "@/contexts/JourneysContext";
-import { type LatLngExpression, type LatLngLiteral } from "leaflet";
+import { latLng, type LatLngExpression, type LatLngLiteral } from "leaflet";
 import SetNewLocation from "./set-new-location";
+import AutomoveMarker from "./automove-marker";
+import { posix } from "path";
+
+export type MarkerPropTypes = {
+  position: [number, number];
+  title: string;
+  date_visited: string;
+};
 
 export default function LeafletMap() {
   const { journeys } = useJourneys();
@@ -13,12 +21,13 @@ export default function LeafletMap() {
     51.51, -0.09,
   ]);
 
-  const markers: LatLngExpression[] = Array.from(
-    journeys.map((journey) => [
-      parseFloat(journey["latitude"]),
-      parseFloat(journey["longitude"]),
-    ])
-  );
+  const markers: MarkerPropTypes[] = journeys.map((journey) => {
+    return {
+      position: [Number(journey.latitude), Number(journey.longitude)],
+      title: journey.city_name,
+      date_visited: journey.date_visited,
+    };
+  });
 
   if (typeof window == "undefined") {
     return;
@@ -37,9 +46,17 @@ export default function LeafletMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {markers.map((LatLngPos, index) => {
-          return <Marker position={LatLngPos} key={index}></Marker>;
+        {markers.map((marker, index) => {
+          return (
+            <AutomoveMarker
+              position={marker.position}
+              title={marker.title}
+              date_visited={marker.date_visited}
+              key={index}
+            />
+          );
         })}
+
         <SetNewLocation />
       </MapContainer>
     </div>

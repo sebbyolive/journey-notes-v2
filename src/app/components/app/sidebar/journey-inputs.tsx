@@ -21,8 +21,6 @@ export default function JourneyInputs({ notesError }: { notesError: boolean }) {
       type: "update/date_visited",
       payload: { date_visited: formattedDate },
     });
-    console.log(formattedDate);
-    console.log(draftJourney);
   }, [date]);
 
   return (
