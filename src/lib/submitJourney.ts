@@ -1,5 +1,6 @@
 "use client";
 
+import { DraftJourneyAction, Journey } from "@/contexts/JourneysContext";
 import { createClient } from "@/utils/supabase/client";
 
 export async function submitJourney({
@@ -7,7 +8,12 @@ export async function submitJourney({
   dispatch,
   refreshJourneys,
   setNotesError,
-}: any) {
+}: {
+  draftJourney: Partial<Journey>;
+  dispatch: (action: DraftJourneyAction) => void;
+  refreshJourneys: () => Promise<void>;
+  setNotesError: (value: boolean) => void;
+}) {
   if (draftJourney.city_name == "invalid location") return;
   if (!draftJourney.notes) {
     setNotesError(!!true);

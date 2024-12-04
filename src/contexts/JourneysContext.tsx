@@ -51,7 +51,7 @@ const initialDraftJourneyState: Journey = {
 export type DraftJourneyAction =
   | {
       type: "update/location";
-      payload: { date_visited: string };
+      payload: Partial<Journey>;
     }
   | {
       type: "update/notes";
@@ -71,7 +71,7 @@ export type DraftJourneyAction =
     }
   | {
       type: "submit/submitDraftJourney";
-      payload: Partial<Journey>;
+      payload?: Partial<Journey>;
     };
 
 const draftJourneyReducer = (

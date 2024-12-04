@@ -2,11 +2,12 @@
 
 import { useEffect } from "react";
 import { createEmojiFromCountryCode } from "@/lib/createEmojiFromCountryCode";
+import { type DraftJourneyAction } from "@/contexts/JourneysContext";
 
 export function useReverseGeocoding(
   lat: number | null,
   lng: number | null,
-  dispatch: (action: any) => void
+  dispatch: (action: DraftJourneyAction) => void
 ): void {
   const BASE_URL = "https://nominatim.openstreetmap.org/reverse?";
   // lat=51.5074&lon=-0.1278&format=json -- example of url ending for reference
