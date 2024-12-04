@@ -12,7 +12,7 @@ export default function SetNewLocation(): React.ReactElement | null {
   const path = usePathname();
   const [lat, setLat] = useState<number | null>(null);
   const [lng, setLng] = useState<number | null>(null);
-  const { dispatch, draftJourney } = useJourneys();
+  const { dispatch } = useJourneys();
 
   useReverseGeocoding(lat, lng, dispatch);
 

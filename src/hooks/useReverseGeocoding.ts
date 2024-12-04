@@ -21,19 +21,19 @@ export function useReverseGeocoding(
         const data = await res.json();
 
         if (!data.address) {
-          // Catch bug that loads the error message for an invalid location on inital render
-          console.log("Invalid location clicked"); // i.e. water, etc.
-          dispatch({
-            type: "update/location",
-            payload: {
-              city_name: "invalid location",
-              country: "",
-              emoji: "",
-              showDraftJourney: true,
-              showCities: false,
-              showCountries: false,
-            },
-          });
+          if (data.error == "Unable to geocode") {
+            dispatch({
+              type: "update/location",
+              payload: {
+                city_name: "invalid location",
+                country: "",
+                emoji: "",
+                showDraftJourney: true,
+                showCities: false,
+                showCountries: false,
+              },
+            });
+          }
         }
 
         if (data.address) {
@@ -44,7 +44,7 @@ export function useReverseGeocoding(
                 ? data.address.city
                 : data.name
                 ? data.name
-                : data.address.country,
+                : data.address.country, // last chance!
               country: data.address.country,
               latitude: data.lat,
               longitude: data.lon,
