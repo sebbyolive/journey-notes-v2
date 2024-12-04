@@ -6,7 +6,7 @@ import { useJourneys } from "@/contexts/JourneysContext";
 import LoadingSpinner from "@/app/components/ui/loading-spinner";
 import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle";
 import { signout } from "@/utils/supabase/actions";
-import { useSubmitJourney } from "@/hooks/useSubmitJourney";
+import { submitJourney } from "@/lib/submitJourney";
 import JourneyInputs from "@/app/components/app/sidebar/journey-inputs";
 import JourneyItem from "@/app/components/app/sidebar/journey-item";
 import CountryItem from "@/app/components/app/sidebar/country-item";
@@ -14,6 +14,7 @@ import CountryItem from "@/app/components/app/sidebar/country-item";
 export default function AppSidebar() {
   const { journeys, isLoading, draftJourney, dispatch, refreshJourneys } =
     useJourneys();
+
   const { showDraftJourney, showCountries, city_name } = draftJourney;
   const [notesError, setNotesError] = useState(false);
   const [showCityInfo, setShowCityInfo] = useState(false);
@@ -119,7 +120,7 @@ export default function AppSidebar() {
 
             <Button
               onClick={() =>
-                useSubmitJourney({
+                submitJourney({
                   draftJourney,
                   dispatch,
                   refreshJourneys,

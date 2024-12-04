@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { type LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useJourneys } from "@/contexts/JourneysContext";
-import { latLng, type LatLngExpression, type LatLngLiteral } from "leaflet";
 import SetNewLocation from "./set-new-location";
 import AutomoveMarker from "./automove-marker";
-import { posix } from "path";
 
 export type MarkerPropTypes = {
   position: [number, number];
@@ -17,9 +16,8 @@ export type MarkerPropTypes = {
 
 export default function LeafletMap() {
   const { journeys } = useJourneys();
-  const [mapPosition, setMapPosition] = useState<LatLngExpression>([
-    51.51, -0.09,
-  ]);
+
+  const mapPosition: LatLngExpression = [51.51, -0.09];
 
   const markers: MarkerPropTypes[] = journeys.map((journey) => {
     return {

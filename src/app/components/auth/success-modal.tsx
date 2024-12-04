@@ -39,7 +39,7 @@ export default function SuccessModal() {
                   as="h3"
                   className="text-base font-semibold text-gray-900"
                 >
-                  You're Officially Signed Up!
+                  You&apos;re Officially Signed Up!
                 </DialogTitle>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">

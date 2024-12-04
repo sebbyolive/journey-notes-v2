@@ -27,6 +27,7 @@ export type Journey = {
   longitude: string;
   date_visited: string;
   notes: string;
+  id?: string;
   showDraftJourney?: boolean;
   showCities?: boolean;
   showCountries?: boolean;
@@ -47,7 +48,7 @@ const initialDraftJourneyState: Journey = {
   showCountries: false,
 };
 
-type DraftJourneyAction =
+export type DraftJourneyAction =
   | {
       type: "update/location";
       payload: { date_visited: string };
@@ -137,6 +138,7 @@ export function JourneysProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetchJourneys();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshJourneys = async () => {

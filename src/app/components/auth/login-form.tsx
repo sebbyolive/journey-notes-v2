@@ -82,6 +82,7 @@ export function LoginForm() {
             <Button type="submit" className="w-full" formAction={handleLogin}>
               Login
             </Button>
+            {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account? {""}

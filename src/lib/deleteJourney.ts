@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 
-export async function deleteJourney(id: string, refreshJourneys: any) {
+export async function deleteJourney(id: string, refreshJourneys: () => void) {
   const supabase = createClient();
 
   const response = await supabase.from("journeys").delete().eq("id", id);
@@ -13,5 +13,5 @@ export async function deleteJourney(id: string, refreshJourneys: any) {
     console.log("Journey deleted successfully");
   }
 
-  await refreshJourneys();
+  refreshJourneys();
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar } from "../../ui/calendar";
 import {
   Popover,
@@ -12,7 +12,7 @@ import TextArea from "../../ui/textarea";
 import { useJourneys } from "@/contexts/JourneysContext";
 
 export default function JourneyInputs({ notesError }: { notesError: boolean }) {
-  const { dispatch, draftJourney } = useJourneys();
+  const { dispatch } = useJourneys();
   const [date, setDate] = useState<Date>(new Date());
   const formattedDate = date?.toLocaleDateString("en-CA");
 
@@ -21,7 +21,7 @@ export default function JourneyInputs({ notesError }: { notesError: boolean }) {
       type: "update/date_visited",
       payload: { date_visited: formattedDate },
     });
-  }, [date]);
+  }, [date, dispatch, formattedDate]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -44,7 +44,9 @@ export default function JourneyInputs({ notesError }: { notesError: boolean }) {
             mode="single"
             selected={date}
             onSelect={(day) => {
-              day && setDate(day);
+              if (day) {
+                setDate(day);
+              }
             }}
             className="rounded-md border shadow [&_[aria-selected='true']]:bg-neutral-800 [&_[aria-selected='true']]:text-neutral-100 [&_[aria-selected='true']]:dark:bg-neutral-800 [&_[aria-selected='true']]:dark:text-neutral-50"
           />

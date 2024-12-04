@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -15,8 +16,8 @@ export default function NotFound() {
               Sorry, this page doesn&apos;t seem to exist 😅
             </h1>
             <p className="mt-6 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
-              Looks like you've travelled somewhere unknown - not even our maps
-              can find it!
+              Looks like you&apos;ve travelled somewhere unknown - not even our
+              maps can find it!
             </p>
             <div className="mt-10">
               <Link
@@ -29,7 +30,7 @@ export default function NotFound() {
           </div>
         </main>
         <div className="hidden lg:relative lg:col-start-2 lg:row-start-1 lg:row-end-4 lg:block">
-          <img
+          <Image
             alt=""
             src={notFoundImg}
             className="absolute inset-0 size-full object-cover"

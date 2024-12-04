@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 
-export async function useSubmitJourney({
+export async function submitJourney({
   draftJourney,
   dispatch,
   refreshJourneys,
@@ -18,7 +18,7 @@ export async function useSubmitJourney({
 
   const supabase = createClient();
 
-  let journeySubmission = {
+  const journeySubmission = {
     city_name: draftJourney.city_name,
     user_id: "",
     country: draftJourney.country,

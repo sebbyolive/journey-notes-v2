@@ -1,4 +1,3 @@
-import { H1, P } from "../ui/typography";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -66,12 +65,14 @@ export default function HomeHero() {
             <div className="mx-auto max-w-7xl px-6 pb-32 sm:pt-60 lg:px-8 lg:pt-12">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <H1>Capture Your Journey, One Note at a Time</H1>
-                  <P className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none">
+                  <h1 className="text-7xl font-bold">
+                    Capture Your Journey, One Note at a Time
+                  </h1>
+                  <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none">
                     Map your travels, save meaningful notes from every
                     destination, and create a personal log of your adventures to
                     treasure forever.
-                  </P>
+                  </p>
                   <p className="mt-4 font-semibold italic">Forever free.</p>
                   <div className="mt-10 flex items-center gap-x-6">
                     <Link href="/login">
