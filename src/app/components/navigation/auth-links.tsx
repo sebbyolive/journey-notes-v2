@@ -1,62 +1,54 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
-import { Button } from "../ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { handleSignOut } from "@/lib/handleSignOut";
 
 const AuthLinks = () => {
   const supabase = createClient();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const [user, setUser] = useState<User | null>(null);
-  const path = usePathname();
-  const inApp = path.startsWith("/app");
-
+  // Check authentication state
   useEffect(() => {
-    const getSession = async () => {
+    const checkAuthStatus = async () => {
       const { data } = await supabase.auth.getSession();
-
-      if (data.session) {
-        setUser(data.session.user);
-      } else {
-        setUser(null);
-      }
+      setIsAuthenticated(!!data.session);
     };
 
-    getSession();
+    checkAuthStatus();
 
+    // Listen for auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session) {
-          setUser(session.user);
-        } else {
-          setUser(null);
-        }
-      }
+      (_event, session) => setIsAuthenticated(!!session)
     );
 
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, []);
 
   return (
-    <div className="flex items-center gap-3">
-      {user ? (
+    <div className="flex gap-4">
+      {isAuthenticated ? (
         <>
-          {!inApp && (
-            <Link href="/app">
-              <Button variant={"default"}>Go to App</Button>
-            </Link>
-          )}
-          <Button variant={"ghost"}>Sign Out</Button>
+          <Link href="/app">
+            <button className="btn-primary">Go to App</button>
+          </Link>
+          <button
+            className="btn-secondary"
+            onClick={async () => {
+              handleSignOut();
+              setIsAuthenticated(false);
+            }}
+          >
+            Sign Out
+          </button>
         </>
       ) : (
-        <>
-          <Link href="/login">Login</Link>
-        </>
+        <Link href="/login">
+          <button className="btn-secondary">Login</button>
+        </Link>
       )}
     </div>
   );

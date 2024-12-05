@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useJourneys } from "@/contexts/JourneysContext";
 import LoadingSpinner from "@/app/components/ui/loading-spinner";
 import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle";
-// import { signout } from "@/utils/supabase/actions";
+import { handleSignOut } from "@/lib/handleSignOut";
 import { submitJourney } from "@/lib/submitJourney";
 import JourneyInputs from "@/app/components/app/sidebar/journey-inputs";
 import JourneyItem from "@/app/components/app/sidebar/journey-item";
@@ -98,7 +98,9 @@ export default function AppSidebar() {
 
       <div className="flex flex-col absolute bottom-12 justify-center gap-6">
         <h2>Click on the map to add a new journey! 😄</h2>
-        <Button variant={"ghost"}>Sign Out of App</Button>
+        <Button onClick={async () => handleSignOut()} variant={"ghost"}>
+          Sign Out of App
+        </Button>
       </div>
 
       {showDraftJourney && (
