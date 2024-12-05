@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Link from "next/link";
-
 import { Button } from "@/app/components/ui/button";
 import {
   Card,
@@ -13,6 +12,12 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { signup } from "@/utils/supabase/actions";
+import SuccessModal from "./success-modal";
+
+interface SignupResult {
+  message?: string;
+  success?: string;
+}
 
 export function SignupForm() {
   const [email, setEmail] = useState<string>("");
@@ -20,25 +25,21 @@ export function SignupForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
 
-    const formData = new FormData();
-    formData.set("email", email);
-    formData.set("password", password);
-
-    const result = await signup(formData);
+    const result: SignupResult | null = await signup({ email, password });
 
     if (!result) {
       setError("An unknown error occurred. Please try again.");
       return;
     }
-    if ("message" in result && result.message) {
+    if (result.message) {
       setError(result.message);
-    } else if ("success" in result && result.success) {
-      setSuccess(true); // Safely access success
+    } else if (result.success) {
+      setSuccess(true);
     }
   };
 
@@ -84,19 +85,19 @@ export function SignupForm() {
                 required
               />
             </div>
-            {error && <div className="text-red-500 text-sm">{error}</div>}
-            {success && (
-              <div className="text-green-500 text-sm">
-                Signup successful! Please check your email to continue.
-              </div>
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
             )}
             <Button type="submit" className="w-full">
               Sign Up
             </Button>
           </div>
         </form>
+        {success && (
+          <SuccessModal open={success} onClose={() => setSuccess(false)} />
+        )}
         <div className="mt-4 text-center text-sm">
-          Already have an account? {""}
+          Already have an account?{" "}
           <Link href="/login" className="underline">
             Sign In
           </Link>

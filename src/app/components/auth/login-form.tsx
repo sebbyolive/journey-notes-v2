@@ -36,7 +36,7 @@ export function LoginForm() {
       setError(result.message);
     } else {
       window.location.reload();
-      router.push("/app");
+      router.push("/");
     }
   };
 
@@ -66,12 +66,6 @@ export function LoginForm() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
               </div>
               <Input
                 id="password"
@@ -85,7 +79,7 @@ export function LoginForm() {
             <Button type="submit" className="w-full">
               Login
             </Button>
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            {error && <p className="text-red-500 text-center">{error}</p>}
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}

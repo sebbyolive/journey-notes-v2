@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -11,16 +10,18 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-export default function SuccessModal() {
-  const [open, setOpen] = useState(true);
+interface SuccessModalProps {
+  open: boolean;
+  onClose: () => void;
+}
 
+export default function SuccessModal({ open, onClose }: SuccessModalProps) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog open={open} onClose={onClose} className="relative z-10">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
       />
-
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <DialogPanel
