@@ -35,6 +35,7 @@ export function LoginForm() {
     if (result?.message) {
       setError(result.message);
     } else {
+      window.location.reload();
       router.push("/app");
     }
   };

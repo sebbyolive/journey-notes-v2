@@ -10,7 +10,8 @@ const SignOutButton = () => {
   const onSignOut = async () => {
     try {
       await handleSignOut();
-      router.push("/"); // Redirect after sign-out
+      router.push("/");
+      window.location.reload();
     } catch (error) {
       console.error("Failed to sign out:", error);
     }
