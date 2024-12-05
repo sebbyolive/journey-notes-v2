@@ -50,7 +50,7 @@ export async function signup({
     };
   }
 
-  const { error, data } = await supabase.auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
     return { message: error.message, success: undefined };
