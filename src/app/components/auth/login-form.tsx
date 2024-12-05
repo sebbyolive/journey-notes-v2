@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
 import {
@@ -11,28 +12,28 @@ import {
 } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
-
-import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
+import { login } from "@/utils/supabase/actions";
+
 export function LoginForm() {
-  const supabase = createClient();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-    if (error) {
-      setError(error.message);
+    const formData = new FormData();
+    formData.set("email", email);
+    formData.set("password", password);
+
+    const result = await login(formData);
+
+    if (result?.message) {
+      setError(result.message);
     } else {
       router.push("/app");
     }
@@ -47,7 +48,7 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -56,6 +57,7 @@ export function LoginForm() {
                 type="email"
                 name="email"
                 placeholder="seb@example.com"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -74,18 +76,18 @@ export function LoginForm() {
                 id="password"
                 type="password"
                 name="password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-
-            <Button type="submit" className="w-full" formAction={handleLogin}>
+            <Button type="submit" className="w-full">
               Login
             </Button>
             {error && <p className="text-red-500 mt-4">{error}</p>}
           </div>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account? {""}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="underline">
               Sign up
             </Link>

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 
 import { Button } from "@/app/components/ui/button";
@@ -11,32 +12,34 @@ import {
 } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
-import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-import SuccessModal from "./success-modal";
+import { signup } from "@/utils/supabase/actions";
 
 export function SignupForm() {
-  const supabase = createClient();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [onSuccess, setOnSuccess] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
-  const handleSignUp = async () => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
     setError(null);
+    setSuccess(false);
 
-    const { error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    const formData = new FormData();
+    formData.set("email", email);
+    formData.set("password", password);
 
-    if (signUpError) {
-      setError(signUpError.message);
+    const result = await signup(formData);
+
+    if (!result) {
+      setError("An unknown error occurred. Please try again.");
       return;
     }
-
-    setOnSuccess(true);
+    if ("message" in result && result.message) {
+      setError(result.message);
+    } else if ("success" in result && result.success) {
+      setSuccess(true); // Safely access success
+    }
   };
 
   return (
@@ -48,7 +51,7 @@ export function SignupForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -57,6 +60,7 @@ export function SignupForm() {
                 type="email"
                 name="email"
                 placeholder="seb@example.com"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -75,19 +79,22 @@ export function SignupForm() {
                 id="password"
                 type="password"
                 name="password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <Button type="submit" className="w-full" formAction={handleSignUp}>
+            {error && <div className="text-red-500 text-sm">{error}</div>}
+            {success && (
+              <div className="text-green-500 text-sm">
+                Signup successful! Please check your email to continue.
+              </div>
+            )}
+            <Button type="submit" className="w-full">
               Sign Up
             </Button>
           </div>
         </form>
-
-        {error && <p className="self-center">{error}</p>}
-        {onSuccess && <SuccessModal />}
-
         <div className="mt-4 text-center text-sm">
           Already have an account? {""}
           <Link href="/login" className="underline">

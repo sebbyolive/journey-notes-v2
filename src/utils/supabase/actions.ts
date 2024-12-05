@@ -1,61 +1,58 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-// LOGIN
-
-export async function login(formData: FormData) {
+export async function login(
+  formData: FormData
+): Promise<{ message?: string } | null> {
   const supabase = await createClient();
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+  const email = formData.get("email")?.toString().trim();
+  const password = formData.get("password")?.toString();
+
+  if (!email || !password) {
+    return { message: "Invalid input data. Please try again." };
+  }
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    if (error.status === 400) {
+      return { message: "No account found with this email." };
+    }
+    return { message: error.message || "Login failed. Please try again." };
+  }
+
+  return null;
+}
+
+export async function signup(
+  formData: FormData
+): Promise<{ message?: string } | { success?: string } | null> {
+  const supabase = await createClient();
+
+  const email = formData.get("email")?.toString().trim();
+  const password = formData.get("password")?.toString();
+
+  if (!email || !password) {
+    return { message: "Invalid input data. Please try again." };
+  }
+
+  // Attempt to sign up the user
+  const {
+    error,
+    data: { user },
+  } = await supabase.auth.signUp({ email, password });
+
+  if (user) {
+    return {
+      message: "You already have a JourneyNotes account!",
+    };
+  } else if (error) return { message: error.message };
+
+  return {
+    success:
+      "Signup successful! Please check your inbox to verify your account.",
   };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
-
-  if (error) {
-    console.log(error.message);
-    return;
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }
 
-// SIGN UP
-export async function signup(formData: FormData) {
-  const supabase = await createClient();
-
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
-
-  if (error) {
-    return;
-  }
-
-  revalidatePath("/");
-  redirect("/");
-}
-
-// SIGN OUT
-
-export async function signout() {
-  const supabase = await createClient();
-
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    console.error("Error during signout:", error.message);
-    return;
-  }
-
-  revalidatePath("/");
-  redirect("/");
-}
+export async function resetPassword() {}
