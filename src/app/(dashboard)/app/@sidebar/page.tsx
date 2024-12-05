@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import { useJourneys } from "@/contexts/JourneysContext";
 import LoadingSpinner from "@/app/components/ui/loading-spinner";
 import CityCountryToggle from "@/app/components/app/sidebar/city-country-toggle";
-import { handleSignOut } from "@/lib/handleSignOut";
 import { submitJourney } from "@/lib/submitJourney";
 import JourneyInputs from "@/app/components/app/sidebar/journey-inputs";
 import JourneyItem from "@/app/components/app/sidebar/journey-item";
 import CountryItem from "@/app/components/app/sidebar/country-item";
+import SignOutButton from "@/app/components/auth/signout-button";
 
 export default function AppSidebar() {
   const { journeys, isLoading, draftJourney, dispatch, refreshJourneys } =
@@ -96,11 +96,11 @@ export default function AppSidebar() {
         </div>
       )}
 
-      <div className="flex flex-col absolute bottom-12 justify-center gap-6">
-        <h2>Click on the map to add a new journey! 😄</h2>
-        <Button onClick={async () => handleSignOut()} variant={"ghost"}>
-          Sign Out of App
-        </Button>
+      <div className="flex flex-col absolute w-40 bottom-12 justify-center gap-6">
+        <h2 className="text-center">
+          Click on the map to add a new journey!<br></br>
+        </h2>
+        <SignOutButton />
       </div>
 
       {showDraftJourney && (

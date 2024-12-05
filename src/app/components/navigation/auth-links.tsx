@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import { handleSignOut } from "@/lib/handleSignOut";
+import SignOutButton from "../auth/signout-button";
+import { Button } from "../ui/button";
 
 const AuthLinks = () => {
   const supabase = createClient();
@@ -31,20 +32,12 @@ const AuthLinks = () => {
   return (
     <div className="flex gap-4">
       {isAuthenticated ? (
-        <>
+        <div className="flex items-center justify-center gap-4">
           <Link href="/app">
-            <button className="btn-primary">Go to App</button>
+            <Button className="btn-primary">Go to App</Button>
           </Link>
-          <button
-            className="btn-secondary"
-            onClick={async () => {
-              handleSignOut();
-              setIsAuthenticated(false);
-            }}
-          >
-            Sign Out
-          </button>
-        </>
+          <SignOutButton />
+        </div>
       ) : (
         <Link href="/login">
           <button className="btn-secondary">Login</button>
