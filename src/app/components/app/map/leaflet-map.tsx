@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { useJourneys } from "@/contexts/JourneysContext";
 import SetNewLocation from "./set-new-location";
 import AutomoveMarker from "./automove-marker";
+import { Suspense } from "react";
 
 export type MarkerPropTypes = {
   position: [number, number];
@@ -54,8 +55,9 @@ export default function LeafletMap() {
             />
           );
         })}
-
-        <SetNewLocation />
+        <Suspense fallback={<>Loading...</>}>
+          <SetNewLocation />
+        </Suspense>
       </MapContainer>
     </div>
   );
