@@ -54,7 +54,7 @@ To start the development server, run `npm run dev`.
 To run the app using Docker (Port 3000):
 
 1. Pull the Docker image: `docker pull ghcr.io/sebbyolive/journey-notes-v2:latest`.
-2. Run the container: `docker run -p 3000:3000 --env-file .env.local ghcr.io/sebbyolive/journey-notes-v2:latest`.
+2. Run the container: `docker run -p 3000:3000 --env-file .env.local journey-notes-v2:latest`.
 
 
 ### Building for Production
