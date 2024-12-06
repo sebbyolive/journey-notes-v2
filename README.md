@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JourneyNotes 🌴
 
-## Getting Started
+JourneyNotes is a modern web application designed to help users organize, document, and share their travel journeys. Written in TypeScript and built with Next.js and powered by Supabase for secure and scalable data management, JourneyNotes offers an easy way to keep track of your travel experiences.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Using JourneyNotes
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+JourneyNotes is currently deployed for use at the following domain:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+https://journey-notes-v2.vercel.app
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Running JourneyNotes Locally
 
-To learn more about Next.js, take a look at the following resources:
+### Installation and Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository: `git clone https://github.com/sebbyolive/journey-notes-v2.git` and navigate to the folder: `cd journey-notes-v2`.
+2. Install dependencies: `npm install`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Supabase Setup
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+JourneyNotes requires a Supabase database for certain features. Ensure you have a Supabase project set up and create the required table:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **`journeys` Table**
+   - **Description**: Stores user journey details.
+   - **Columns**:
+  - `id` (UUID, primary key, auto-generated): Unique identifier for each journey.
+  - `created_at` (timestamp): Timestamp of when the journey was created.
+  - `user_id` (UUID, foreign key): References the user who created the journey.
+  - `city_name` (text): The name of the city visited.
+  - `country` (text): The name of the country visited.
+  - `emoji` (text): An emoji representing the country (e.g., flag).
+  - `latitude` (float8): Latitude coordinate of the location.
+  - `longitude` (float8): Longitude coordinate of the location.
+  - `date_visited` (date): The date when the location was visited.
+  - `notes` (text): Additional notes or descriptions about the journey.
+    
+2. Set up RLS to ensure only users can Read, Insert, and Delete their own journeys!
+   
+3. Create `.env.local` / `.env.production` files in the root directory with the required environment variables:
+   - Example:
+     - `NEXT_PUBLIC_SUPABASE_URL=your-supabase-url-here`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key-here`
+
+
+### Running the Development Server
+
+To start the development server, run `npm run dev`.
+
+
+### Using Docker (Optional)
+
+To run the app using Docker (Port 3000):
+
+1. Build the Docker image: `docker build -t journey-notes-v2 .`.
+2. Run the container: `docker run -p 3000:3000 --env-file .env.local journey-notes-v2`.
+
+
+### Building for Production
+
+1. Generate a production build: `npm run build`.
+2. Start the production server: `npm start`.
+
+
+## Acknowledgements
+
+JourneyNotes uses the following open-source tools and APIs:
+
+- [Leaflet](https://leafletjs.com/) and [React-Leaflet](https://react-leaflet.js.org/) for the interactive map.
+- [Nominatim](https://nominatim.org/) for reverse geocoding.
+
+Thank you to the devs of those great projects!
