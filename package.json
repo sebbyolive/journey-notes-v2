@@ -28,6 +28,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "lucide-react": "^0.462.0",
     "next": "15.0.3",
+    "next-cookies": "^2.0.3",
     "npm": "^10.9.1",
     "react": "^18.0.1",
     "react-day-picker": "^8.10.1",
